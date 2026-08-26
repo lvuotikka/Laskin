@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Button,
+  FlatList,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -13,13 +14,30 @@ export default function App() {
   const [number1, setNumber1] = useState('');
   const [number2, setNumber2] = useState('');
   const [result, setResult] = useState(0);
+  const [history, setHistory] = useState<string[]>([]);
 
   const add = () => {
-    setResult(Number(number1) + Number(number2));
+    const firstNumber = Number(number1);
+    const secondNumber = Number(number2);
+    const newResult = firstNumber + secondNumber;
+
+    setResult(newResult);
+    setHistory((currentHistory) => [
+      ...currentHistory,
+      `${firstNumber} + ${secondNumber} = ${newResult}`,
+    ]);
   };
 
   const subtract = () => {
-    setResult(Number(number1) - Number(number2));
+    const firstNumber = Number(number1);
+    const secondNumber = Number(number2);
+    const newResult = firstNumber - secondNumber;
+
+    setResult(newResult);
+    setHistory((currentHistory) => [
+      ...currentHistory,
+      `${firstNumber} - ${secondNumber} = ${newResult}`,
+    ]);
   };
 
   return (
@@ -27,6 +45,16 @@ export default function App() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+    <Text style={styles.historyTitle}>History</Text>
+
+    <FlatList
+      data={history}
+      renderItem={({ item }) => (
+        <Text style={styles.historyItem}>{item}</Text>
+      )}
+      keyExtractor={(_, index) => index.toString()}
+      style={styles.historyList}
+    />
       <Text style={styles.title}>Laskin</Text>
 
       <Text style={styles.result}>Result: {result}</Text>
@@ -89,5 +117,20 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 10,
+  },
+  historyTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 30,
+    marginBottom: 8,
+  },
+  historyList: {
+    width: 250,
+    maxHeight: 180,
+  },
+  historyItem: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 4,
   },
 });
