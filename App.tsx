@@ -26,6 +26,8 @@ export default function App() {
       ...currentHistory,
       `${firstNumber} + ${secondNumber} = ${newResult}`,
     ]);
+    setNumber1('');
+    setNumber2('');
   };
 
   const subtract = () => {
@@ -38,6 +40,8 @@ export default function App() {
       ...currentHistory,
       `${firstNumber} - ${secondNumber} = ${newResult}`,
     ]);
+    setNumber1('');
+    setNumber2('');
   };
 
   return (
@@ -45,16 +49,7 @@ export default function App() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-    <Text style={styles.historyTitle}>History</Text>
 
-    <FlatList
-      data={history}
-      renderItem={({ item }) => (
-        <Text style={styles.historyItem}>{item}</Text>
-      )}
-      keyExtractor={(_, index) => index.toString()}
-      style={styles.historyList}
-    />
       <Text style={styles.title}>Laskin</Text>
 
       <Text style={styles.result}>Result: {result}</Text>
@@ -74,6 +69,16 @@ export default function App() {
         onChangeText={setNumber2}
         placeholder="Toinen numero"
       />
+      <Text style={styles.historyTitle}>History</Text>
+
+    <FlatList
+      data={history}
+      renderItem={({ item }) => (
+        <Text style={styles.historyItem}>{item}</Text>
+      )}
+      keyExtractor={(_, index) => index.toString()}
+      style={styles.historyList}
+    />
 
       <View style={styles.buttons}>
         <View style={styles.button}>
